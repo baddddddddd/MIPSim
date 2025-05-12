@@ -134,8 +134,34 @@ function simulateInstruction(line, currentIndex) {
     case 'bne':
       if (regVal(tokens[1]) !== regVal(tokens[2])) return labelMap[tokens[3]];
       break;
+    case 'blt':
+      if (regVal(tokens[1]) < regVal(tokens[2])) return labelMap[tokens[3]];
+      break;
+    case 'ble':
+      if (regVal(tokens[1]) <= regVal(tokens[2])) return labelMap[tokens[3]];
+      break;
+    case 'bgt':
+      if (regVal(tokens[1]) > regVal(tokens[2])) return labelMap[tokens[3]];
+      break;
+    case 'bge':
+      if (regVal(tokens[1]) >= regVal(tokens[2])) return labelMap[tokens[3]];
+      break;
+    case 'sll':
+      registers[resolveReg(tokens[1])] = regVal(tokens[2]) << parseInt(tokens[3]);
+      break;
+    case 'srl':
+      registers[resolveReg(tokens[1])] = regVal(tokens[2]) >>> parseInt(tokens[3]);
+      break;
+    case 'sra':
+      registers[resolveReg(tokens[1])] = regVal(tokens[2]) >> parseInt(tokens[3]);
+      break;
     case 'j':
       return labelMap[tokens[1]];
+    case 'jal':
+      registers['$ra'] = currentIndex + 1;
+      return labelMap[tokens[1]];
+    case 'jr':
+      return regVal(tokens[1]);   
   }
 }
 
@@ -173,7 +199,7 @@ function highlightSyntax(line) {
   // tokenize and color
   return line.split(/\s+/).map(token => {
     // TK: UPDATE WHEN ADDING MORE INSTRUCTIONS
-    if (/^(add|sub|addi|and|or|lw|sw|beq|bne|j)$/.test(token)) {
+    if (/^(add|sub|addi|and|or|nor|slt|sll|srl|sra|lui|lw|sw|beq|bne|blt|ble|bgt|bge|j|jal|jr|nop)$/.test(token)) {
       return `<span class="instr">${token}</span>`;
     } else if (/^\$[a-z0-9]+$/i.test(token)) {
       return `<span class="reg">${token}</span>`;
