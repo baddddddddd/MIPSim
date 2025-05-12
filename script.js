@@ -18,9 +18,26 @@ for (let [num, name] of Object.entries(regAlias)) {
 let memory = {};
 let labelMap = {};
 let programLines = [];
+let curExecution = null;
 
-// TK: RESET REGISTERS AND MEMORY EVERYTIME CODE IS RUN
+function resetState() {
+  for (let [num, name] of Object.entries(regAlias)) {
+    registers[name] = 0;
+  }
+
+  memory = {};
+  labelMap = {};
+  programLines = [];
+
+  renderMemory();
+  renderRegisters();
+}
+
 function runCode() {
+  resetState();
+  clearTimeout(curExecution);
+  curExecution = null;
+  
   const code = document.getElementById("code").value.trim();
   const lines = code.split("\n").map(line => line.trim()).filter(line => line && !line.startsWith('#'));
 
@@ -70,7 +87,7 @@ function runCode() {
     renderMemory();
 
     i = jump !== undefined ? jump : i + 1;
-    setTimeout(() => executeLine(), 1000);
+    curExecution = setTimeout(() => executeLine(), 1000);
   };
 
   executeLine();
@@ -170,3 +187,4 @@ function highlightSyntax(line) {
   }).join(" ") + (comment ? ` ${comment}` : "");
 }
 
+resetState();
