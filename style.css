@@ -1,13 +1,19 @@
+/* One Dark Pro Theme for MIPS Simulator Syntax Highlighting */
+
+/* General Body Styling */
 body {
   font-family: monospace;
-  background-color: #f0f0f0;
+  background-color: #282c34;
+  color: #abb2bf;
   padding: 20px;
 }
 
 h1 {
   text-align: center;
+  color: #61afef;
 }
 
+/* Container and Text Area */
 .container {
   max-width: 1000px;
   margin: auto;
@@ -20,11 +26,14 @@ textarea {
   font-size: 14px;
   padding: 10px;
   margin-bottom: 10px;
+  background-color: #21252b;
+  color: #abb2bf;
+  border: 1px solid #444;
 }
 
 #highlighted-code {
-  background: #222;
-  color: white;
+  background: #21252b;
+  color: #abb2bf;
   padding: 10px;
   margin-bottom: 20px;
   min-height: 200px;
@@ -37,8 +46,8 @@ textarea {
 }
 
 .line-highlight {
-  background-color: #444;
-  border-left: 4px solid lime;
+  background-color: #3e4451;
+  border-left: 4px solid #98c379;
 }
 
 button {
@@ -46,6 +55,10 @@ button {
   font-size: 16px;
   margin-bottom: 20px;
   cursor: pointer;
+  background-color: #61afef;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
 }
 
 #panels {
@@ -56,10 +69,10 @@ button {
 
 .panel {
   flex: 1;
-  background: white;
+  background: #2c323c;
   padding: 10px;
   border-radius: 6px;
-  border: 1px solid #ccc;
+  border: 1px solid #444;
   max-height: 300px;
   overflow-y: auto;
 }
@@ -67,14 +80,29 @@ button {
 .panel h2 {
   margin-top: 0;
   font-size: 18px;
-  border-bottom: 1px solid #ddd;
+  border-bottom: 1px solid #444;
   padding-bottom: 5px;
 }
 
-/* TK: USE MONOKAI THEME OR ONE DARK */
-.label { color: purple; font-weight: bold; }
-.instr { color: teal; }
-.reg { color: royalblue; }
-.imm { color: green; }
-.comment { color: gray; font-style: italic; }
+/* Syntax Highlighting Colors */
+.label { 
+  color: #c678dd; 
+  font-weight: bold; 
+}
 
+.instr { 
+  color: #61afef; 
+}
+
+.reg { 
+  color: #e06c75; 
+}
+
+.imm { 
+  color: #98c379; 
+}
+
+.comment { 
+  color: #5c6370; 
+  font-style: italic; 
+}
