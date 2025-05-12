@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>MIPS Simulator</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <h1>MIPS Instruction Set Simulator</h1>
+
+  <div class="container">
+    <textarea id="code" placeholder="Enter MIPS assembly code here..."></textarea>
+    <div id="highlighted-code"></div>
+    <button onclick="runCode()">Run</button>
+
+    <div id="panels">
+      <div id="registers" class="panel">
+        <h2>Registers</h2>
+        <div id="register-values"></div>
+      </div>
+      <div id="memory" class="panel">
+        <h2>Memory</h2>
+        <div id="memory-values"></div>
+      </div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
