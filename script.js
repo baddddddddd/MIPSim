@@ -1,9 +1,19 @@
-// TK: ADD MORE REGISTERS
-let registers = {
-  $t0: 0, $t1: 0, $t2: 0, $t3: 0,
-  $t4: 0, $t5: 0, $t6: 0, $t7: 0,
-  $zero: 0
+let registers = {};
+const regAlias = {
+  $0: '$zero', $1: '$at', $2: '$v0', $3: '$v1',
+  $4: '$a0', $5: '$a1', $6: '$a2', $7: '$a3',
+  $8: '$t0', $9: '$t1', $10: '$t2', $11: '$t3',
+  $12: '$t4', $13: '$t5', $14: '$t6', $15: '$t7',
+  $16: '$s0', $17: '$s1', $18: '$s2', $19: '$s3',
+  $20: '$s4', $21: '$s5', $22: '$s6', $23: '$s7',
+  $24: '$t8', $25: '$t9', $26: '$k0', $27: '$k1',
+  $28: '$gp', $29: '$sp', $30: '$fp', $31: '$ra'
 };
+
+for (let [num, name] of Object.entries(regAlias)) {
+  registers[name] = 0;
+  // registers[num] = 0;
+}
 
 let memory = {};
 let labelMap = {};
@@ -69,32 +79,34 @@ function runCode() {
 function simulateInstruction(line, currentIndex) {
   const tokens = line.replace(/,/g, '').split(/\s+/);
   const instr = tokens[0];
-  const regVal = r => registers[r] ?? 0;
+
+  const resolveReg = r => regAlias[r] || r;
+  const regVal = r => registers[resolveReg(r)] ?? 0;
 
   switch (instr) {
     case 'add':
-      registers[tokens[1]] = regVal(tokens[2]) + regVal(tokens[3]);
+      registers[resolveReg(tokens[1])] = regVal(tokens[2]) + regVal(tokens[3]);
       break;
     case 'sub':
-      registers[tokens[1]] = regVal(tokens[2]) - regVal(tokens[3]);
+      registers[resolveReg(tokens[1])] = regVal(tokens[2]) - regVal(tokens[3]);
       break;
     case 'addi':
-      registers[tokens[1]] = regVal(tokens[2]) + parseInt(tokens[3]);
+      registers[resolveReg(tokens[1])] = regVal(tokens[2]) + parseInt(tokens[3]);
       break;
     case 'and':
-      registers[tokens[1]] = regVal(tokens[2]) & regVal(tokens[3]);
+      registers[resolveReg(tokens[1])] = regVal(tokens[2]) & regVal(tokens[3]);
       break;
     case 'or':
-      registers[tokens[1]] = regVal(tokens[2]) | regVal(tokens[3]);
+      registers[resolveReg(tokens[1])] = regVal(tokens[2]) | regVal(tokens[3]);
       break;
     case 'lw': {
-      const rt = tokens[1];
+      const rt = resolveReg(tokens[1]);
       const [offset, base] = tokens[2].split(/[()]/);
       registers[rt] = memory[regVal(base) + parseInt(offset)] || 0;
       break;
     }
     case 'sw': {
-      const rt = tokens[1];
+      const rt = resolveReg(tokens[1]);
       const [offset, base] = tokens[2].split(/[()]/);
       memory[regVal(base) + parseInt(offset)] = regVal(rt);
       break;
@@ -109,6 +121,7 @@ function simulateInstruction(line, currentIndex) {
       return labelMap[tokens[1]];
   }
 }
+
 
 function renderRegisters() {
   const container = document.getElementById("register-values");
